@@ -5,8 +5,8 @@ go 1.22.4
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gofiber/fiber/v2 v2.50.0
-	gorm.io/driver/mysql v1.5.0
-	gorm.io/gorm v1.25.6
+	gorm.io/driver/mysql v1.5.7
+	gorm.io/gorm v1.26.1
 )
 
 require (

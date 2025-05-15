@@ -22,7 +22,7 @@ Future<String?> createTransaction({
   required int amount,
   required String customerName,
 }) async {
-  final url = Uri.parse('http://192.168.135.183:8000/admin/payment');
+  final url = Uri.parse('http://192.168.35.70:8000/admin/payment');
 
   try {
     final response = await http.post(

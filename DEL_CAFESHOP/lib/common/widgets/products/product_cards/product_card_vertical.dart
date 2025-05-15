@@ -181,7 +181,7 @@ class ProductCardVertical extends StatelessWidget {
 
   String _getImageUrl(String imagePath) {
     if (imagePath.startsWith('http')) return imagePath;
-    return 'http://172.27.80.50:8000/storage/$imagePath';
+    return 'http://192.168.35.70:8000/storage/$imagePath';
   }
 
   Widget _buildAddToCartButton() {

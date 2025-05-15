@@ -67,6 +67,6 @@ class CartItem extends StatelessWidget {
 
   String _getImageUrl(String imagePath) {
     if (imagePath.startsWith('http')) return imagePath;
-    return 'http://192.168.135.183:8000/storage/$imagePath';
+    return 'http://192.168.35.70:8000/storage/$imagePath';
   }
 }

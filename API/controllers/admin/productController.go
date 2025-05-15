@@ -13,7 +13,7 @@ import (
 )
 
 const ImageProduct = "./storage/products/"
-const BaseImageURL = "http://192.168.135.183:8000/storage/products"
+const BaseImageURL = "http://192.168.35.70:8000/storage/products"
 
 func init() {
 

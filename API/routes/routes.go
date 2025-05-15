@@ -42,7 +42,7 @@ func Setup(app *fiber.App) {
 	admin.Put("/product/:id", adminControllers.UpdateProduct)
 	admin.Delete("/product/:id", adminControllers.DeleteProduct)
 
-	//STATIC
+	// STATIC
 	app.Static("/storage", "../PA2/storage/app/public")
 
 	// ------------------- USER ROUTES -------------------
@@ -56,6 +56,7 @@ func Setup(app *fiber.App) {
 	user.Post("/register", userController.RegisterUser)
 	user.Post("/login", userController.LoginUser)
 	user.Get("/profile", userController.UserProfile)
+	user.Put("/profile", userController.UpdateUserProfile) // Tambahkan rute untuk update profil
 	user.Post("/logout", userController.LogoutUser)
 
 	// Wishlist Routes

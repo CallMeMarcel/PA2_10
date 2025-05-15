@@ -1,82 +1,133 @@
+// lib/features/personalization/screens/profile/profile.dart
 import 'package:del_cafeshop/common/widgets/appbar/appbar.dart';
 import 'package:del_cafeshop/common/widgets/images/circular_image.dart';
 import 'package:del_cafeshop/common/widgets/texts/section_heading.dart';
+import 'package:del_cafeshop/features/authentication/controllers/onboarding/profile_controller.dart';
+import 'package:del_cafeshop/features/personalization/screens/profile/edit_profile.dart';
 import 'package:del_cafeshop/features/personalization/screens/profile/widgets/profile_menu.dart';
 import 'package:del_cafeshop/features/personalization/screens/settings/settings.dart';
 import 'package:del_cafeshop/utils/constants/image_strings.dart';
 import 'package:del_cafeshop/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const TAppbar(
-        showBackArrow: true,
-        title: Text('Profile'),
-      ),
-      /// Body 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(TSizes.defaultSpace) ,
-          child: Column(
-            children: [
-              // Profile Picture
-              SizedBox(
-                width: double.infinity,
+    final controller = Get.put(ProfileController());
+
+    return FutureBuilder(
+      future: SharedPreferences.getInstance(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final prefs = snapshot.data as SharedPreferences;
+        final token = prefs.getString('auth_token');
+        if (token == null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Get.offAllNamed('/login');
+          });
+          return const Center(child: Text('Mengalihkan ke login...'));
+        }
+
+        return Scaffold(
+          appBar: const TAppbar(
+            showBackArrow: true,
+            title: Text('Profil'),
+          ),
+          body: Obx(() {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (controller.user.value == null) {
+              return const Center(child: Text('Gagal memuat profil'));
+            }
+
+            final user = controller.user.value!;
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(TSizes.defaultSpace),
                 child: Column(
                   children: [
-                     const CircularImages(image: TImages.user, width: 80, height: 80),
-                     TextButton(onPressed: (){}, child: const Text('Change Profile Picture'))
+                    // Foto Profil
+                    SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          const CircularImages(
+                            image: TImages.user,
+                            width: 80,
+                            height: 80,
+                          ),
+                          TextButton(
+                            onPressed: () => Get.to(() => const EditProfileScreen()),
+                            child: const Text('Edit Profil'),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Detail
+                    const SizedBox(height: TSizes.spaceBtwItems / 2),
+                    const Divider(),
+                    const SizedBox(height: TSizes.spaceBtwItems),
+
+                    // Judul Informasi Profil
+                    const SectionHeading(
+                      title: 'Informasi Profil',
+                      showActionButton: false,
+                    ),
+                    const SizedBox(height: TSizes.spaceBtwItems),
+
+                    ProfileMenu(
+                      onPressed: () {},
+                      title: 'Nama',
+                      value: user.name,
+                    ),
+                    ProfileMenu(
+                      onPressed: () {},
+                      title: 'Username',
+                      value: user.username,
+                    ),
+                    ProfileMenu(
+                      onPressed: () {},
+                      title: 'ID Pengguna',
+                      value: user.id.toString(),
+                    ),
+                    ProfileMenu(
+                      onPressed: () {},
+                      title: 'E-mail',
+                      value: user.email,
+                    ),
+                    ProfileMenu(
+                      onPressed: () {},
+                      title: 'Nomor Telepon',
+                      value: user.phone,
+                    ),
+
+                    const Divider(),
+                    const SizedBox(height: TSizes.spaceBtwItems),
+
+                    Center(
+                      child: TextButton(
+                        onPressed: () => Get.to(() => const SettingScreen()),
+                        child: const Text(
+                          'Tutup Akun',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-
-              // Details
-              const SizedBox(height: TSizes.spaceBtwItems / 2,),
-              const Divider(),
-              const SizedBox(height: TSizes.spaceBtwItems),
-
-              /// Heading Profile Information
-              const SectionHeading(title: 'Profile Information', showActionButton: false),
-              const SizedBox(height: TSizes.spaceBtwItems),
-              
-              ProfileMenu(onPressed: () {  }, title: 'Pedro Marcel Hutagaol', value: 'Kelompok 10 D3TI 2023',),
-              ProfileMenu(onPressed: () {  }, title: 'Pedroo', value: 'Kelompok 10 D3TI 2023',),
-
-              const SizedBox(height: TSizes.spaceBtwItems),
-              const Divider(),
-              const SizedBox(height: TSizes.spaceBtwItems),
-
-              ///Heading Personal Info
-              const SectionHeading(title: 'Personal Information'),
-              const SizedBox(height: TSizes.spaceBtwItems,),
-
-              ProfileMenu(onPressed:() { } , title: 'User ID', value: '11323034'),
-              ProfileMenu(onPressed:() { } , title: 'E-mail', value: 'pedromhutagaol@gamil.com'),
-              ProfileMenu(onPressed:() { } , title: 'Phone Number', value: '+628-1396-5549-49'),
-              ProfileMenu(onPressed:() { } , title: 'Gender', value: 'Male'),
-              ProfileMenu(onPressed:() { } , title: 'Date of Birth', value: '09 Nov 2005'),
-
-              const Divider(),
-              const SizedBox(height: TSizes.spaceBtwItems,),
-
-              Center(
-                child: TextButton(
-                  onPressed: () => Get.to(() => const SettingScreen()) 
-                , child: const Text('Close Account' , style: TextStyle(color: Colors.red),) 
-                ),
-              )
-             
-            ],
-          ),
-
-        ),
-      ),
+            );
+          }),
+        );
+      },
     );
   }
 }
-

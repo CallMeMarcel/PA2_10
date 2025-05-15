@@ -4,7 +4,7 @@ import 'package:del_cafeshop/data/models/product.dart';
 import 'package:http/http.dart' as http;
 
 class ProductService {
-  static const String _baseUrl = 'http://192.168.135.183:8000/admin/product';
+  static const String _baseUrl = 'http://192.168.35.70:8000/admin/product';
 
   static Future<List<Product>> getProducts() async {
     final Uri url = Uri.parse('$_baseUrl/index');

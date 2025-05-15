@@ -1,31 +1,34 @@
 <?php
+// app/Http/Controllers/AdminController.php
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AdminController extends Controller
 {
-    // Hapus constructor, middleware ditangani di routes
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth', 'admin']); // Tidak perlu
-    // }
-
-    // Dashboard Admin
     public function dashboard()
     {
-        return Inertia::render('Admin/Dashboard');
+        $stats = [
+            'kategori' => Category::count(),
+            'produk' => Product::count(),
+            'orders' => Order::count(),
+        ];
+
+        return Inertia::render('Admin/Dashboard', [
+            'stats' => $stats
+        ]);
     }
 
-    // Halaman Kategori Produk
     public function kategori()
     {
         return Inertia::render('Admin/Kategori');
     }
 
-    // Halaman Produk
     public function produk()
     {
         return Inertia::render('Admin/Produk');
