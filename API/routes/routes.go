@@ -44,7 +44,7 @@ func Setup(app *fiber.App) {
 
 	// STATIC
 	app.Static("/storage", "../PA2/storage/app/public")
-
+	app.Static("/storage", "D:/Perkuliahaan/Sem 4/PA2_10/storage/app/public")
 	// ------------------- USER ROUTES -------------------
 	user := app.Group("/user")
 
@@ -57,6 +57,7 @@ func Setup(app *fiber.App) {
 	user.Post("/login", userController.LoginUser)
 	user.Get("/profile", userController.UserProfile)
 	user.Put("/profile", userController.UpdateUserProfile) // Tambahkan rute untuk update profil
+	user.Post("/upload-profile-image", userController.UploadProfileImage) // Tambahkan rute ini
 	user.Post("/logout", userController.LogoutUser)
 
 	// Wishlist Routes

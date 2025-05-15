@@ -1,4 +1,5 @@
 // lib/features/personalization/screens/profile/profile.dart
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:del_cafeshop/common/widgets/appbar/appbar.dart';
 import 'package:del_cafeshop/common/widgets/images/circular_image.dart';
 import 'package:del_cafeshop/common/widgets/texts/section_heading.dart';
@@ -28,7 +29,6 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Gunakan tag untuk konsistensi
     final controller = Get.put(ProfileController(), tag: 'profile');
 
     return FutureBuilder(
@@ -65,14 +65,38 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(TSizes.defaultSpace),
                 child: Column(
                   children: [
+                    // Foto Profil
                     SizedBox(
                       width: double.infinity,
                       child: Column(
                         children: [
-                          const CircularImages(
-                            image: TImages.user,
+                          Container(
                             width: 80,
                             height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: ClipOval(
+                              child: user.imageUrl != null && user.imageUrl!.isNotEmpty
+                                  ? CachedNetworkImage(
+                                      imageUrl: 'http://192.168.35.70:8000${user.imageUrl}',
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => const CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) => const CircularImages(
+                                        image: TImages.user,
+                                        width: 80,
+                                        height: 80,
+                                      ),
+                                    )
+                                  : const CircularImages(
+                                      image: TImages.user,
+                                      width: 80,
+                                      height: 80,
+                                    ),
+                            ),
                           ),
                           TextButton(
                             onPressed: () => Get.to(() => const EditProfileScreen()),
@@ -81,14 +105,19 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+
+                    // Detail
                     const SizedBox(height: TSizes.spaceBtwItems / 2),
                     const Divider(),
                     const SizedBox(height: TSizes.spaceBtwItems),
+
+                    // Judul Informasi Profil
                     const SectionHeading(
                       title: 'Informasi Profil',
                       showActionButton: false,
                     ),
                     const SizedBox(height: TSizes.spaceBtwItems),
+
                     ProfileMenu(
                       onPressed: () {},
                       title: 'Nama',
@@ -119,8 +148,10 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Dibuat Pada',
                       value: formatDate(user.createdAt),
                     ),
+
                     const Divider(),
                     const SizedBox(height: TSizes.spaceBtwItems),
+
                     Center(
                       child: TextButton(
                         onPressed: () => Get.to(() => const SettingScreen()),

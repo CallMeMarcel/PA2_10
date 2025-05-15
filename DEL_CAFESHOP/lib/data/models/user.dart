@@ -1,4 +1,4 @@
-// lib/models/user.dart
+// lib/data/models/user.dart
 class User {
   final int id;
   final String name;
@@ -7,6 +7,7 @@ class User {
   final String phone;
   final String createdAt;
   final String updatedAt;
+  final String? imageUrl; // Tambahkan field ini
 
   User({
     required this.id,
@@ -16,6 +17,7 @@ class User {
     required this.phone,
     required this.createdAt,
     required this.updatedAt,
+    this.imageUrl,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class User {
       phone: json['phone'] as String,
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
+      imageUrl: json['image_url'] as String?,
     );
   }
 }

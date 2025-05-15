@@ -5,7 +5,7 @@ import 'package:del_cafeshop/common/widgets/layouts/grid_layout.dart';
 import 'package:del_cafeshop/common/widgets/products/brand/brand_show_case.dart';
 import 'package:del_cafeshop/common/widgets/products/product_cards/product_card_vertical.dart';
 import 'package:del_cafeshop/common/widgets/texts/section_heading.dart';
-import 'package:del_cafeshop/utils/constants/image_strings.dart';
+// import 'package:del_cafeshop/utils/constants/image_strings.dart';
 import 'package:del_cafeshop/utils/constants/sizes.dart';
 
 import 'package:del_cafeshop/data/models/product.dart';
