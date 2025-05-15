@@ -22,7 +22,7 @@ Future<String?> createTransaction({
   required int amount,
   required String customerName,
 }) async {
-  final url = Uri.parse('http://192.168.35.70:8000/admin/payment');
+  final url = Uri.parse('http://192.168.107.183:8000/admin/payment');
 
   try {
     final response = await http.post(
@@ -100,7 +100,7 @@ class CheckoutScreen extends StatelessWidget {
               String? token = await createTransaction(
                 orderId: 'ORDER-${DateTime.now().millisecondsSinceEpoch}',
                 amount: total.toInt(),
-                customerName: 'Cowo Sonyaa',
+                customerName: 'Del Cafe',
               );
 
               if (token != null) {

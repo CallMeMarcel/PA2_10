@@ -11,16 +11,15 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-	// Tambahkan parameter parseTime dan loc pada DSN
-	dsn := "root:@tcp(localhost:3306)/db_delcafe?charset=utf8mb4&parseTime=True&loc=Local"
-
+	// Tambahkan parameter parseTime dan loc pada DS
+	dsn := "root:@tcp(localhost:3306)/laravel?charset=utf8mb4&parseTime=True&loc=Local"
+	
 	// Tambahkan konfigurasi tambahan untuk GORM
 	conn, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NowFunc: func() time.Time {
 			return time.Now().Local()
 		},
 	})
-
 	if err != nil {
 		panic("could not connect to database: " + err.Error())
 	}
@@ -40,6 +39,7 @@ func Connect() {
 
 	// AutoMigrate dengan penanganan error
 	err = conn.AutoMigrate(
+<<<<<<< HEAD
 		&models.Admin{}, &models.Category{}, &models.Product{},
 		&models.User{}, &models.ProductDetail{}, &models.Review{},
 		&models.Wishlist{}, &models.Cart{}, &models.Order{},

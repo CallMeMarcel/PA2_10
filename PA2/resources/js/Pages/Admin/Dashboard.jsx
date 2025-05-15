@@ -47,7 +47,7 @@ export default function Dashboard({ stats = { kategori: 0, produk: 0, orders: 0,
                         <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                         <XAxis dataKey="date" />
                         <YAxis />
-                        <Tooltip formatter={(value) => `Rp ${Number(value).toLocaleString('id-ID')}`} />
+                        <Tooltip formatter={(value) => Rp ${Number(value).toLocaleString('id-ID')}} />
                         <Line type="monotone" dataKey="total" stroke="#10b981" strokeWidth={3} />
                     </LineChart>
                 </ResponsiveContainer>
@@ -60,7 +60,7 @@ function StatCard({ title, value, href, icon, gradient }) {
     return (
         <Link
             href={href}
-            className={`bg-gradient-to-br ${gradient} text-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300`}
+            className={bg-gradient-to-br ${gradient} text-white p-6 rounded-2xl shadow-lg transform hover:scale-105 transition duration-300}
         >
             <div className="flex items-center justify-between">
                 <div>

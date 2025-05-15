@@ -7,9 +7,6 @@ import (
 	"api/database"
 	"api/routes"
 	admin "api/controllers/admin"
-
-//	"api/migrations"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
@@ -23,10 +20,7 @@ func main() {
 
 	// Koneksi ke database
 	database.Connect()
-	// Jalankan migrasi
-	// if err := migrations.AddImageUrlToUsers(database.DB); err != nil {
-	// 	log.Fatal("Gagal menjalankan migrasi:", err)
-	// }
+>>>>>>> 22b3ef9 (commit)
 
 	// Inisialisasi Fiber
 	app := fiber.New()

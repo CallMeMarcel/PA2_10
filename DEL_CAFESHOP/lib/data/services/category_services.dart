@@ -4,7 +4,7 @@ import '../models/category.dart'; // ganti sesuai path kamu
 
 class CategoryService {
   static Future<List<Category>> fetchCategories() async {
-    final url = Uri.parse('http://192.168.35.70:8000/admin/category/index');
+    final url = Uri.parse('http://192.168.107.183:8000/admin/category/index');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

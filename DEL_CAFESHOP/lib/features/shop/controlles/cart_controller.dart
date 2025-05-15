@@ -19,12 +19,16 @@ class CartController extends GetxController {
   int get jumlahDipilih => selectedProducts.length;
 
   /// Tambahkan produk ke cart
-  void addToCart(Product product) {
-    if (!_cartItems.contains(product)) {
-      _cartItems.add(product);
-    }
-    update(); // Memicu update UI jika perlu
+ void addToCart(Product product) {
+  if (!_cartItems.contains(product)) {
+    _cartItems.add(product);
+  } else {
+    // Tambahkan kuantitas jika produk sudah ada
+    final index = _cartItems.indexOf(product);
+    _cartItems[index].quantity.value += product.quantity.value;
   }
+  update();
+}
 
   /// Hapus produk dari cart
   void removeFromCart(Product product) {

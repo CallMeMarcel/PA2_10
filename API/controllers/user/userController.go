@@ -29,11 +29,11 @@ func NewUserController(userService *services.UserService) *UserController {
 // RegisterUser handles user registration
 func (uc *UserController) RegisterUser(ctx *fiber.Ctx) error {
 	var data struct {
-		Name     string `json:"name"`
-		Username string `json:"username"`
-		Email    string `json:"email"`
-		PhoneNo  string `json:"phone_no"`
-		Password string `json:"password"`
+		Name     string json:"name"
+		Username string json:"username"
+		Email    string json:"email"
+		PhoneNo  string json:"phone_no"
+		Password string json:"password"
 	}
 
 	// Parse request body
@@ -52,7 +52,7 @@ func (uc *UserController) RegisterUser(ctx *fiber.Ctx) error {
 	}
 
 	// Validasi email format
-	if !regexp.MustCompile(`^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$`).MatchString(data.Email) {
+	if !regexp.MustCompile(^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$).MatchString(data.Email) {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format email tidak valid",
 		})
@@ -67,7 +67,7 @@ func (uc *UserController) RegisterUser(ctx *fiber.Ctx) error {
 	}
 
 	// Validasi nomor telepon
-	if !regexp.MustCompile(`^\d{10,15}$`).MatchString(data.PhoneNo) {
+	if !regexp.MustCompile(^\d{10,15}$).MatchString(data.PhoneNo) {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format nomor telepon tidak valid",
 		})
@@ -209,11 +209,11 @@ func (uc *UserController) UpdateUserProfile(ctx *fiber.Ctx) error {
 
 	// Parse data dari body
 	var data struct {
-		Name     string `json:"name"`
-		Username string `json:"username"`
-		Email    string `json:"email"`
-		Phone    string `json:"phone"`
-		ImageUrl string `json:"image_url"`
+		Name     string json:"name"
+		Username string json:"username"
+		Email    string json:"email"
+		Phone    string json:"phone"
+		ImageUrl string json:"image_url"
 	}
 
 	if err := ctx.BodyParser(&data); err != nil {
@@ -231,14 +231,14 @@ func (uc *UserController) UpdateUserProfile(ctx *fiber.Ctx) error {
 	}
 
 	// Validasi email
-	if !regexp.MustCompile(`^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$`).MatchString(data.Email) {
+	if !regexp.MustCompile(^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$).MatchString(data.Email) {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format email tidak valid",
 		})
 	}
 
 	// Validasi nomor telepon
-	if !regexp.MustCompile(`^\d{10,15}$`).MatchString(data.Phone) {
+	if !regexp.MustCompile(^\d{10,15}$).MatchString(data.Phone) {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Format nomor telepon tidak valid",
 		})

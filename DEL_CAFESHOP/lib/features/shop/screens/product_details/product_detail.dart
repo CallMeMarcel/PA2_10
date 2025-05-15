@@ -1,5 +1,7 @@
 import 'package:del_cafeshop/common/widgets/texts/section_heading.dart';
 import 'package:del_cafeshop/data/models/product.dart';
+import 'package:del_cafeshop/features/shop/controlles/cart_controller.dart';
+import 'package:del_cafeshop/features/shop/screens/checkout/checkout.dart';
 import 'package:del_cafeshop/features/shop/screens/product_details/widgets/bottom_add_cart.dart';
 import 'package:del_cafeshop/features/shop/screens/product_details/widgets/product_attribute.dart';
 import 'package:del_cafeshop/features/shop/screens/product_details/widgets/product_detail_image_slider.dart';
@@ -15,12 +17,13 @@ import 'package:readmore/readmore.dart';
 
 class ProductDetail extends StatelessWidget {
   final Product product;
-  
+
   const ProductDetail({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
+    final cartController = Get.put(CartController()); // pastikan controller tersedia
 
     return Scaffold(
       bottomNavigationBar: BottomAddCart(product: product),
@@ -48,11 +51,22 @@ class ProductDetail extends StatelessWidget {
                   ProductAttribute(product: product),
                   const SizedBox(height: TSizes.spaceBtwSections),
 
-                  /// Checkout Button
+                  /// Checkout Button (langsung tambah ke cart dan menuju halaman checkout)
                   SizedBox(
-                    width: double.infinity,
+                    width: 150,
+                    height: 55,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        cartController.addToCart(product); // Tambahkan ke keranjang
+                        cartController.selectedProducts.add(product); // Tandai sebagai dipilih
+                        Get.to(() => const CheckoutScreen()); // Navigasi ke checkout
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepOrange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       child: const Text('Checkout'),
                     ),
                   ),
@@ -76,21 +90,21 @@ class ProductDetail extends StatelessWidget {
                   const Divider(),
                   const SizedBox(height: TSizes.spaceBtwSections),
 
-                  /// Reviews Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SectionHeading(title: 'Reviews (199)'),
-                      IconButton(
-                        onPressed: () => Get.to(() => const ProductReviewsScreen()),
-                        icon: Icon(
-                          Iconsax.arrow_right_3,
-                          size: 24,
-                          color: dark ? Colors.white : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
+                  // /// Reviews Section
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     const SectionHeading(title: 'Reviews (199)'),
+                  //     IconButton(
+                  //       onPressed: () => Get.to(() => ProductReviewsScreen()),
+                  //       icon: Icon(
+                  //         Iconsax.arrow_right_3,
+                  //         size: 24,
+                  //         color: dark ? Colors.white : Colors.black,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: TSizes.spaceBtwSections),
                 ],
               ),

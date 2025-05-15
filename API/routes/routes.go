@@ -42,9 +42,11 @@ func Setup(app *fiber.App) {
 	admin.Put("/product/:id", adminControllers.UpdateProduct)
 	admin.Delete("/product/:id", adminControllers.DeleteProduct)
 
-	// STATIC
-	app.Static("/storage", "../PA2/storage/app/public")
+
 	app.Static("/storage", "D:/Perkuliahaan/Sem 4/PA2/PA2_10/storage/app/public")
+	
+	//STATIC
+	app.Static("/storage", "../PA2/storage/app/public")
 	// ------------------- USER ROUTES -------------------
 	user := app.Group("/user")
 
@@ -60,9 +62,17 @@ func Setup(app *fiber.App) {
 	user.Post("/upload-profile-image", userController.UploadProfileImage) // Tambahkan rute ini
 	user.Post("/logout", userController.LogoutUser)
 
+
+	user.Post("/logout", userController.LogoutUser)
+
+	//Review Management
+	user.Post("/review", userController.SubmitReview)   // Kirim review (hanya untuk user yang login)
+	user.Get("/review/index", userController.GetAllReviews) // Public: Lihat semua review
+
 	// Wishlist Routes
 	user.Post("/wishlist", userControllers.AddToWishlist)
 	user.Get("/wishlist/index", userControllers.GetWishlist)
 	user.Delete("/wishlist/:id", userControllers.RemoveWishlist)
 	// Hapus wishlist berdasarkan ID produk atau wishlist
 }
+

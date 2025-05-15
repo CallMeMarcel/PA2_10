@@ -4,7 +4,6 @@ import "time"
 
 type Product struct {
 	ID          uint      `json:"id" gorm:"primaryKey"`
-	//Name        string    `json:"name" gorm:"not null"`
 	Description string    `json:"description"`
 	Status      string    `json:"status" gorm:"not null"`
 	Title       string    `json:"title" gorm:"not null"`

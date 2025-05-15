@@ -61,7 +61,7 @@ function AdminProduk({ products = [] }) {
                         <tr key={product.id} className="border-t hover:bg-gray-50 transition">
                             <td className="p-3">
                                 <img
-                                    src={product.image ? `/storage/${product.image}` : "/images/default.png"}
+                                    src={product.image ? /storage/${product.image} : "/images/default.png"}
                                     alt={product.title}
                                     className="w-14 h-14 object-cover rounded"
                                 />

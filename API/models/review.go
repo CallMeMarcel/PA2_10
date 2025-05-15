@@ -1,13 +1,17 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Review struct {
-	Id        uint      `json:"id"`
-	IdUser    uint      `json:"id_user"`
-	IdProduct uint      `json:"id_product"`
-	User      User      `gorm:"foreignKey:IdUser" json:"user"`
-	Product   Product   `gorm:"foreignKey:IdProduct" json:"product"`
-	CreateAt  time.Time `json:"create_at" gorm:"autoCreateTime;default:null"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime;default:null" json:"updated_at"`
+	gorm.Model
+	ProductID uint      `json:"productId"`
+	UserID    uint      `json:"userId"`
+	Username  string    `json:"username"`
+	Rating    float32   `json:"rating" gorm:"type:decimal(2,1)"`
+	Comment   string    `json:"comment" gorm:"type:text"`
+	CreatedAt time.Time `json:"createdAt"`
 }

@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'package:get/get.dart';
+import 'package:get/get.dart'; // ⬅️ Diperlukan untuk RxInt
 import 'category.dart';
 
 class Product {
   final int id;
+  final String name;
   final String description;
   final String status;
   final String title;
@@ -14,10 +15,11 @@ class Product {
   final int categoryId;
   final Category category;
 
-  RxInt quantity;
+  RxInt quantity; // ✅ Jadikan reactive
 
   Product({
     required this.id,
+    required this.name,
     required this.description,
     required this.status,
     required this.title,
@@ -30,11 +32,13 @@ class Product {
     int quantity = 1,
   }) : quantity = quantity.obs;
 
+  /// Getter untuk thumbnail, misalnya menggunakan image
   String get thumbnail => image;
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'] ?? 0,
+      name: json['name'] ?? '',
       description: json['description'] ?? '',
       status: json['status'] ?? 'available',
       title: json['title'] ?? '',
@@ -57,6 +61,7 @@ class Product {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'name': name,
       'description': description,
       'status': status,
       'title': title,
@@ -66,11 +71,11 @@ class Product {
       'updated_at': updatedAt.toIso8601String(),
       'category_id': categoryId,
       'category': category.toJson(),
-      'quantity': quantity.value,
+      'quantity': quantity.value, // ✅ Ambil nilai dari RxInt
     };
   }
 
-  get toppings => null;
+  get toppings => null; // Placeholder for toppings, if needed
 
   @override
   bool operator ==(Object other) =>
@@ -84,3 +89,6 @@ class Product {
 
   factory Product.fromRawJson(String str) => Product.fromJson(jsonDecode(str));
 }
+
+
+

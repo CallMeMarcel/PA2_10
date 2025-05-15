@@ -46,4 +46,4 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/register', fn () => Inertia::render('Auth/Register'))->name('register');
 });
 
-require __DIR__.'/auth.php';
+require _DIR_.'/auth.php';

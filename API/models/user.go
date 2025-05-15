@@ -14,7 +14,8 @@ type User struct {
 	Email     string    `json:"email" validate:"required,email"`
 	Phone     string    `json:"phone" validate:"required"`
 	Password  string    `json:"password" validate:"required,min=6"`
-	ImageUrl  string    `json:"image_url" gorm:"type:varchar(255)"` // Tambahkan field ini
+
+	ImageUrl  string    `json:"image_url" gorm:"type:varchar(255)"` // Tambahkan field ini)
 	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime"`
 }

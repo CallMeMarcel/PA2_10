@@ -1,4 +1,3 @@
-// lib/controllers/auth_controller.dart
 import 'dart:convert';
 import 'package:del_cafeshop/navigation_menu.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +10,13 @@ class AuthController extends GetxController {
   final passwordController = TextEditingController();
   final rememberMe = false.obs;
   final formKey = GlobalKey<FormState>();
-  var isLoading = false.obs;
 
   Future<void> login() async {
     if (!formKey.currentState!.validate()) return;
 
-    final url = Uri.parse('http://192.168.35.70:8000/user/login');
+    final url = Uri.parse('http://192.168.107.183:8000/user/login');
 
     try {
-      isLoading(true);
       final res = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -32,44 +29,34 @@ class AuthController extends GetxController {
       final data = jsonDecode(res.body);
 
       print('Response status: ${res.statusCode}');
-      print('Response body: ${res.body}'); // Debug: Cetak seluruh respons
+      print('Response body: ${res.body}');
 
       if (res.statusCode == 200) {
-        final userData = data['user'];
-        final token = data['token']; // Ambil token dari respons
+        final user = data['user'];
+        if (user != null) {
+          final username = user['username'];
+          final email = user['email'];  // Ambil email dari respons server
 
-        if (userData != null && token != null) {
-          final username = userData['username'];
-          final email = userData['email'];
-
-          // Simpan username, email, dan token ke SharedPreferences
+          // Simpan username dan email ke SharedPreferences
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('username', username);
-          await prefs.setString('email', email);
-          await prefs.setString('auth_token', token);
-
-          // Debug: Verifikasi token tersimpan
-          print('Token tersimpan: $token');
-          print('Username tersimpan: $username');
-          print('Email tersimpan: $email');
+          await prefs.setString('email', email);  // Simpan email ke SharedPreferences
 
           if (rememberMe.value) {
-            print('Remember me diaktifkan');
+            // Simpan token atau data lain jika diperlukan
+            print('Remember me is enabled');
           }
 
           Get.snackbar('Sukses', 'Login berhasil');
           Get.offAll(() => NavigationMenu());
         } else {
-          Get.snackbar('Error', 'Data pengguna atau token tidak ditemukan dalam respons.');
-          print('User data: $userData, Token: $token'); // Debug: Cetak data yang hilang
+          Get.snackbar('Error', 'Username atau email tidak ditemukan dalam respons server.');
         }
       } else {
         Get.snackbar('Login Gagal', data['message'] ?? 'Email atau password salah');
       }
     } catch (e) {
       Get.snackbar('Error', 'Terjadi kesalahan: ${e.toString()}');
-    } finally {
-      isLoading(false);
     }
   }
 

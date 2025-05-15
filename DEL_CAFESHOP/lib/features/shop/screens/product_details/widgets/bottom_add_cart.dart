@@ -1,14 +1,17 @@
 import 'package:del_cafeshop/common/widgets/icons/circular_icon.dart';
 import 'package:del_cafeshop/data/models/product.dart';
+import 'package:del_cafeshop/features/shop/controlles/cart_controller.dart';
 import 'package:del_cafeshop/utils/constants/colors.dart';
 import 'package:del_cafeshop/utils/constants/sizes.dart';
 import 'package:del_cafeshop/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart'; // ✅ Tambahkan
 import 'package:iconsax/iconsax.dart';
+
 
 class BottomAddCart extends StatefulWidget {
   final Product product;
-  
+
   const BottomAddCart({super.key, required this.product});
 
   @override
@@ -17,6 +20,7 @@ class BottomAddCart extends StatefulWidget {
 
 class _BottomAddCartState extends State<BottomAddCart> {
   int quantity = 1;
+  final CartController cartController = Get.put(CartController()); // ✅ Inisialisasi controller
 
   void _incrementQuantity() {
     setState(() {
@@ -33,11 +37,14 @@ class _BottomAddCartState extends State<BottomAddCart> {
   }
 
   void _addToCart() {
-    // Here you would typically call your cart service
-    // For example: CartService.instance.addToCart(widget.product, quantity);
+    // ✅ Set jumlah quantity ke dalam product
+    widget.product.quantity.value = quantity;
+
+    cartController.addToCart(widget.product);
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Added ${quantity} ${widget.product.title} to cart'),
+        content: Text('Added $quantity ${widget.product.title} to cart'),
       ),
     );
   }
@@ -45,10 +52,10 @@ class _BottomAddCartState extends State<BottomAddCart> {
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: TSizes.defaultSpace, 
+        horizontal: TSizes.defaultSpace,
         vertical: TSizes.defaultSpace / 2,
       ),
       decoration: BoxDecoration(
@@ -85,7 +92,7 @@ class _BottomAddCartState extends State<BottomAddCart> {
               ),
             ],
           ),
-          
+
           // Add to Cart Button
           ElevatedButton(
             onPressed: _addToCart,
@@ -93,7 +100,7 @@ class _BottomAddCartState extends State<BottomAddCart> {
               padding: const EdgeInsets.all(TSizes.md),
               backgroundColor: TColors.black,
               side: const BorderSide(color: TColors.black),
-            ), 
+            ),
             child: const Text('Add to Cart'),
           ),
         ],

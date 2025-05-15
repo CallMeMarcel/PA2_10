@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class OverallProductRating extends StatelessWidget {
   const OverallProductRating({
-    super.key,
+    super.key, required double rating,
   });
 
   @override
