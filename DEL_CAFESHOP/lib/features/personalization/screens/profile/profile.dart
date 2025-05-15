@@ -11,13 +11,25 @@ import 'package:del_cafeshop/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
+  String formatDate(String dateString) {
+    try {
+      final dateTime = DateTime.parse(dateString);
+      final formatter = DateFormat('dd MMMM yyyy');
+      return formatter.format(dateTime);
+    } catch (e) {
+      return dateString;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileController());
+    // Gunakan tag untuk konsistensi
+    final controller = Get.put(ProfileController(), tag: 'profile');
 
     return FutureBuilder(
       future: SharedPreferences.getInstance(),
@@ -53,7 +65,6 @@ class ProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(TSizes.defaultSpace),
                 child: Column(
                   children: [
-                    // Foto Profil
                     SizedBox(
                       width: double.infinity,
                       child: Column(
@@ -70,19 +81,14 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    // Detail
                     const SizedBox(height: TSizes.spaceBtwItems / 2),
                     const Divider(),
                     const SizedBox(height: TSizes.spaceBtwItems),
-
-                    // Judul Informasi Profil
                     const SectionHeading(
                       title: 'Informasi Profil',
                       showActionButton: false,
                     ),
                     const SizedBox(height: TSizes.spaceBtwItems),
-
                     ProfileMenu(
                       onPressed: () {},
                       title: 'Nama',
@@ -108,10 +114,13 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Nomor Telepon',
                       value: user.phone,
                     ),
-
+                    ProfileMenu(
+                      onPressed: () {},
+                      title: 'Dibuat Pada',
+                      value: formatDate(user.createdAt),
+                    ),
                     const Divider(),
                     const SizedBox(height: TSizes.spaceBtwItems),
-
                     Center(
                       child: TextButton(
                         onPressed: () => Get.to(() => const SettingScreen()),

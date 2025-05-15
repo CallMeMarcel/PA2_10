@@ -10,7 +10,8 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProfileController>();
+    // Gunakan Get.find dengan tag untuk memastikan controller yang sama
+    final controller = Get.find<ProfileController>(tag: 'profile');
     final formKey = GlobalKey<FormState>();
 
     // Inisialisasi controller teks dengan data pengguna saat ini
@@ -106,12 +107,16 @@ class EditProfileScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
-                          await controller.updateProfile(
-                            name: nameController.text.trim(),
-                            username: usernameController.text.trim(),
-                            email: emailController.text.trim(),
-                            phone: phoneController.text.trim(),
-                          );
+                          try {
+                            await controller.updateProfile(
+                              name: nameController.text.trim(),
+                              username: usernameController.text.trim(),
+                              email: emailController.text.trim(),
+                              phone: phoneController.text.trim(),
+                            );
+                          } catch (e) {
+                            Get.snackbar('Error', 'Gagal menyimpan perubahan: $e');
+                          }
                         }
                       },
                       child: const Text('Simpan Perubahan'),

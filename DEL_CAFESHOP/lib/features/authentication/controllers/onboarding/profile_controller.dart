@@ -56,14 +56,12 @@ class ProfileController extends GetxController {
         phone: phone,
       );
 
-      // Perbarui data pengguna lokal
       user.value = updatedUser;
-
-      // Perbarui SharedPreferences jika email berubah
       await prefs.setString('email', email);
       await prefs.setString('username', username);
 
       Get.snackbar('Sukses', 'Profil berhasil diperbarui');
+      print('Navigasi kembali ke ProfileScreen'); // Debug
       Get.back(); // Kembali ke ProfileScreen
     } catch (e) {
       Get.snackbar('Error', 'Gagal memperbarui profil: $e');
