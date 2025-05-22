@@ -1,11 +1,22 @@
-import { Link, useForm } from "@inertiajs/react"; // Tambahkan useForm
+import { useState } from "react";
+import { Link, useForm } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
-export default function Index({ orders = [] }) {
-    const { delete: destroy } = useForm();
 
-    const handleDelete = (id) => {
-        if (confirm("Apakah kamu yakin ingin menghapus pesanan ini?")) {
-            destroy(route('admin.orders.destroy', id));
+export default function Index({ orders: initialOrders = [] }) {
+    const [orders, setOrders] = useState(initialOrders); // ⬅️ simpan state lokal
+    const { put } = useForm();
+
+    const handleComplete = (id) => {
+        if (confirm("Tandai pesanan ini sebagai selesai?")) {
+            put(route('admin.orders.complete', id), {
+                preserveScroll: true,
+                onSuccess: () => {
+                    alert("Pesanan ditandai sebagai selesai.");
+
+                    // Hapus dari tampilan
+                    setOrders((prev) => prev.filter(order => order.id !== id));
+                },
+            });
         }
     };
 
@@ -22,7 +33,7 @@ export default function Index({ orders = [] }) {
                             <th className="p-2">Total</th>
                             <th className="p-2">Status</th>
                             <th className="p-2">Produk</th>
-                            <th className="p-2">Aksi</th> {/* Tambahkan kolom aksi */}
+                            <th className="p-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,8 +55,8 @@ export default function Index({ orders = [] }) {
                                     </td>
                                     <td className="p-2">
                                         <button 
-                                            onClick={() => handleDelete(order.id)} 
-                                            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                                            onClick={() => handleComplete(order.id)} 
+                                            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm"
                                         >
                                             Selesai
                                         </button>

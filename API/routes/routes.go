@@ -44,7 +44,7 @@ func Setup(app *fiber.App) {
 
 	// STATIC
 	app.Static("/storage", "../PA2/storage/app/public")
-	app.Static("/storage", "D:/Perkuliahaan/Sem 4/PA2_10/storage/app/public")
+	app.Static("/storage", "D:/Perkuliahaan/Sem 4/PA2/PA2_10/storage/app/public")
 	// ------------------- USER ROUTES -------------------
 	user := app.Group("/user")
 

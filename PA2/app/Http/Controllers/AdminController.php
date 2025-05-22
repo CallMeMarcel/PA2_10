@@ -1,12 +1,11 @@
 <?php
-// app/Http/Controllers/AdminController.php
 
 namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Order;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -17,6 +16,11 @@ class AdminController extends Controller
             'kategori' => Category::count(),
             'produk' => Product::count(),
             'orders' => Order::count(),
+            'revenue_by_date' => Order::where('status', 'selesai')
+                ->select(DB::raw("DATE(created_at) as date"), DB::raw("SUM(total_amount) as total"))
+                ->groupBy(DB::raw("DATE(created_at)"))
+                ->orderBy('date', 'asc')
+                ->get(),
         ];
 
         return Inertia::render('Admin/Dashboard', [

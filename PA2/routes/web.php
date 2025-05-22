@@ -37,6 +37,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/orders', [OrderController::class, 'index'])
         ->name('admin.orders.index');
         Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
+        Route::put('/admin/orders/{order}/complete', [OrderController::class, 'markAsComplete'])->name('admin.orders.complete');
 
         // Manual Order (by admin)
          // manual order: bikin order baru
