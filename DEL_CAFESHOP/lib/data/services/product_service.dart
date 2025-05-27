@@ -45,7 +45,6 @@ class ProductService {
   static Product _defaultProduct() {
     return Product(
       id: 0,
-      name: 'Unknown',
       description: '',
       status: 'available',
       title: 'Unknown Product',

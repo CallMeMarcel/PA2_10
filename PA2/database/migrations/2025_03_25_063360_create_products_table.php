@@ -12,20 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id(); // ID produk
-            $table->string('name')->nullable();
-            $table->string('image')->nullable(); // URL atau path gambar produk
-            $table->string('title'); // Nama produk
-            $table->text('description'); // Deskripsi produk
-            $table->enum('status', ['available', 'unavailable'])->default('available'); // Status produk
-            $table->decimal('price', 10, 2); // Harga produk
-            $table->unsignedBigInteger('category_id'); // Foreign key ke tabel categories
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade'); // Relasi ke tabel categories
-            $table->timestamps(); // Tanggal pembuatan dan pembaruan
+            $table->id();
+            $table->string('image')->nullable();
+            $table->string('title');
+            $table->text('description');
+            $table->enum('status', ['available', 'unavailable'])->default('available');
+            $table->decimal('price', 10, 2);
             
-
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            
+            $table->unsignedBigInteger('user_id'); // Tambahan ini
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            
+            $table->timestamps();
         });
-
+        
         
     }
 

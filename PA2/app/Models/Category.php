@@ -9,12 +9,17 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'user_id'];
 
-    // Model Category// Model Product
-// Model Product
-    public function category()
+    // Relasi ke User (jika kategori milik user tertentu)
+    public function user()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(User::class);
+    }
+
+    // Relasi ke produk (1 kategori bisa punya banyak produk)
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

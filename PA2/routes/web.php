@@ -12,41 +12,34 @@ Route::get('/', function () {
     return redirect()->route('admin.dashboard');
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::prefix('admin')->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-        // Rute CRUD untuk kategori
-        Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
-        Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
-        Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
-        Route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('admin.kategori.update');
-        Route::delete('/kategori/{category}', [KategoriController::class, 'destroy'])->name('admin.kategori.destroy');  
-        Route::get('/admin/kategori', [KategoriController::class, 'create'])->name('admin.kategori.create');
+    // Kategori
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
+    Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
+    Route::get('/kategori/{category}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
+    Route::put('/kategori/{category}', [KategoriController::class, 'update'])->name('admin.kategori.update');
+    Route::delete('/kategori/{category}', [KategoriController::class, 'destroy'])->name('admin.kategori.destroy');
 
-        // Rute CRUD untuk produk
-        Route::get('/produk', [ProductController::class, 'index'])->name('admin.produk.index');
-        Route::post('/produk', [ProductController::class, 'store'])->name('admin.produk.store');
-        Route::get('/admin/produk/{product}/edit', [ProductController::class, 'edit'])->name('admin.produk.edit');
-        Route::put('/produk/{product}', [ProductController::class, 'update'])->name('admin.produk.update');
-        Route::delete('/produk/{id}', [ProductController::class, 'destroy'])->name('admin.produk.destroy');
-        Route::get('/admin/produk', [ProductController::class, 'create'])->name('admin.produk.create');
+    // Produk
+    Route::get('/produk', [ProductController::class, 'index'])->name('admin.produk.index');
+    Route::get('/produk/create', [ProductController::class, 'create'])->name('admin.produk.create');
+    Route::post('/produk', [ProductController::class, 'store'])->name('admin.produk.store');
+    Route::get('/produk/{product}/edit', [ProductController::class, 'edit'])->name('admin.produk.edit');
+    Route::put('/produk/{product}', [ProductController::class, 'update'])->name('admin.produk.update');
+    Route::delete('/produk/{product}', [ProductController::class, 'destroy'])->name('admin.produk.destroy');
 
-        // Rute untuk pesanan (Ditambahkan)
-        // daftar semua order (manual + online)
-        Route::get('/orders', [OrderController::class, 'index'])
-        ->name('admin.orders.index');
-        Route::delete('/admin/orders/{order}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
-        Route::put('/admin/orders/{order}/complete', [OrderController::class, 'markAsComplete'])->name('admin.orders.complete');
+    // Order dan Manual Order
+    Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
+    Route::put('/orders/{order}/complete', [OrderController::class, 'markAsComplete'])->name('admin.orders.complete');
 
-        // Manual Order (by admin)
-         // manual order: bikin order baru
-    Route::get('/manual-order/create', [ManualOrderController::class, 'create'])
-    ->name('admin.order.create');
-    Route::post('/manual-order', [ManualOrderController::class, 'store'])
-    ->name('admin.order.store');
-    });
+    Route::get('/manual-order/create', [ManualOrderController::class, 'create'])->name('admin.order.create');
+    Route::post('/manual-order', [ManualOrderController::class, 'store'])->name('admin.order.store');
 });
+
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', fn () => Inertia::render('Auth/Login'))->name('login');

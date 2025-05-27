@@ -24,14 +24,13 @@ func init() {
 
 func CreateProduct(ctx *fiber.Ctx) error {
 
-	name := ctx.FormValue("name")
 	description := ctx.FormValue("description")
 	status := ctx.FormValue("status")
 	title := ctx.FormValue("title")
 	priceStr := ctx.FormValue("price")
 	idCategoryStr := ctx.FormValue("id_category")
 
-	if name == "" || description == "" || status == "" || title == "" || priceStr == "" || idCategoryStr == "" {
+	if description == "" || status == "" || title == "" || priceStr == "" || idCategoryStr == "" {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "All fields are required",
 		})
@@ -66,7 +65,6 @@ func CreateProduct(ctx *fiber.Ctx) error {
 	imageURL := fmt.Sprintf("%s/%s", BaseImageURL, filename)
 
 	product := models.Product{
-		Name:        name,
 		Description: description,
 		Status:      status,
 		Title:       title,
@@ -155,8 +153,6 @@ func UpdateProduct(ctx *fiber.Ctx) error {
 			"message": "Product not found",
 		})
 	}
-
-	name := ctx.FormValue("name")
 	description := ctx.FormValue("description")
 	status := ctx.FormValue("status")
 	title := ctx.FormValue("title")
@@ -194,7 +190,6 @@ func UpdateProduct(ctx *fiber.Ctx) error {
 		product.Image = fmt.Sprintf("%s/%s", BaseImageURL, filename)
 	}
 
-	product.Name = name
 	product.Description = description
 	product.Status = status
 	product.Title = title

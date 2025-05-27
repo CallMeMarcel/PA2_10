@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,20 +10,46 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'image', 'description', 'status', 'price', 'category_id'];
+    protected $fillable = [
+        'title',
+        'image',
+        'description',
+        'status',
+        'price',
+        'category_id',
+        'user_id', // jika produk dibuat oleh user tertentu
+    ];
 
-    // Relasi dengan Category
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id');
-    }
+    protected $casts = [
+        'price' => 'float',
+    ];
 
-    // Atribut tambahan untuk mendapatkan URL gambar dengan benar
+    // Append attribute tambahan ke model JSON output
     protected $appends = ['image_url'];
 
-    // Method untuk mendapatkan URL gambar
+    /**
+     * Relasi ke kategori produk.
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Relasi ke user (opsional, jika ada creator produk).
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Akses custom: URL gambar produk.
+     */
     public function getImageUrlAttribute()
     {
-        return $this->image ? Storage::url($this->image) : asset('images/default.png');
+        return $this->image
+            ? Storage::url($this->image)
+            : asset('images/default.png');
     }
 }
