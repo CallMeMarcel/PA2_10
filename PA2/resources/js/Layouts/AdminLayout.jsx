@@ -3,16 +3,46 @@ import {
     FiLogOut, FiGrid, FiShoppingCart,
     FiFolder, FiClipboard, FiPlusSquare
 } from "react-icons/fi";
+import { useEffect } from "react";
+
+function SidebarItem({ icon, label, href, isActive }) {
+    return (
+        <li>
+            <Link
+                href={href}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all
+                    ${isActive
+                        ? "bg-[#5a4233] text-white shadow-md"
+                        : "hover:bg-[#5a4233] hover:text-white text-gray-200"
+                    }`}
+            >
+                {icon} {label}
+            </Link>
+        </li>
+    );
+}
 
 export default function AdminLayout({ children }) {
-    const { url } = usePage();
+    const { url, component } = usePage();
+
+    // ✅ useEffect harus di dalam fungsi komponen
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            import("bootstrap/dist/css/bootstrap.css");
+            import("summernote/dist/summernote-bs4.css");
+            import("summernote/dist/summernote-bs4.js");
+            import("jquery").then(($) => {
+                window.$ = window.jQuery = $;
+            });
+        }
+    }, []);
 
     const navItems = [
-        { label: "Dashboard", href: "/admin/dashboard", icon: <FiGrid /> },
-        { label: "Produk", href: "/admin/produk", icon: <FiShoppingCart /> },
-        { label: "Kategori", href: "/admin/kategori", icon: <FiFolder /> },
-        { label: "Pesanan", href: "/admin/orders", icon: <FiClipboard /> },
-        { label: "Manual Order", href: route("admin.order.create"), icon: <FiPlusSquare /> },
+        { label: "Dashboard", href: "/admin/dashboard", icon: <FiGrid />, match: "Admin/Dashboard" },
+        { label: "Produk", href: "/admin/produk", icon: <FiShoppingCart />, match: "Admin/Produk" },
+        { label: "Kategori", href: "/admin/kategori", icon: <FiFolder />, match: "Admin/Kategori" },
+        { label: "Pesanan", href: "/admin/orders", icon: <FiClipboard />, match: "Admin/Orders" },
+        { label: "Manual Order", href: route("admin.order.create"), icon: <FiPlusSquare />, match: "Admin/Order/Create" },
     ];
 
     return (
@@ -25,23 +55,15 @@ export default function AdminLayout({ children }) {
 
                 <nav className="flex-1">
                     <ul className="space-y-3">
-                        {navItems.map((item, i) => {
-                            const isActive = url.startsWith(item.href);
-                            return (
-                                <li key={i}>
-                                    <Link
-                                        href={item.href}
-                                        className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all
-                                            ${isActive
-                                                ? "bg-[#5a4233] text-white shadow-md"
-                                                : "hover:bg-[#5a4233] hover:text-white text-gray-200"
-                                            }`}
-                                    >
-                                        {item.icon} {item.label}
-                                    </Link>
-                                </li>
-                            );
-                        })}
+                        {navItems.map((item, i) => (
+                            <SidebarItem
+                                key={i}
+                                icon={item.icon}
+                                label={item.label}
+                                href={item.href}
+                                isActive={component?.startsWith(item.match)}
+                            />
+                        ))}
                     </ul>
                 </nav>
 
